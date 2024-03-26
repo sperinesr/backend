@@ -1,0 +1,90 @@
+h1 {
+    color: red;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border: black 2px solid;
+    background-color: teal;
+}
+
+h2 {
+    color: green;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.contenedorCards {
+    text-align: center;
+    align-content: center;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 5px;
+}
+
+.card {
+    background-color: gold;
+    border: black 2px solid;
+}
+
+.card a {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: indigo;
+}
+
+.card p {
+    font-style: italic;
+    font-size: larger;
+}
+
+.card button {
+    margin-bottom: 10px;
+}
+
+form {
+    padding: 10px;
+    border: 1px solid black;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+
+    grid-gap: 5px;
+
+    justify-content: center;
+}
+
+form input {
+    text-align: left;
+    width: 90%;
+}
+
+form p {
+    text-align: center;
+    width: 90%;
+}
+
+form button {
+    text-align: center;
+    grid-column: 1/3;
+}
+
+#contenedorProductos {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 5px;
+}
+
+#contenedorProductos p {
+    margin: 5px;
+}
+
+#contenedorProductos button {
+    font-size: 20px;
+    margin: 5px;
+}
+
+.pagination {
+    text-align: center;
+    font-size: large;
+}
