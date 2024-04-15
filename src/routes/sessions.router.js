@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const UserModel = require("../models/user.js");
+const UserModel = require("../models/user.model.js");
 // importamos la comparacion de password hasheado
 const passport = require("passport")
 

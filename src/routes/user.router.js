@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const UserModel = require("../models/user.js");
+const UserModel = require("../models/user.model.js");
 
 // hasheo de contraseña
 // const { createHash } = require("../utils/hashbcrypt.js");

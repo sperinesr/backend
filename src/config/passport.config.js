@@ -2,13 +2,13 @@
 const passport = require("passport")
 const local = require("passport-local")
 // importamos los modelos
-const Usermodel = require("../models/user.js")
+const Usermodel = require("../models/user.model.js")
 // importamos el hasheo
 const { createHash, isValidPassword } = require("../utils/hashbcrypt.js")
 // estrategia con github
 const gitHubStrategy = require("passport-github2");
 // cartManager
-const cartManager = require("../controllers/CartManagerDB.js")
+const cartManager = require("../controllers/cart.controller.js")
 const cManager = new cartManager()
 
 // definimos la estrategia
