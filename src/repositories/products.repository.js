@@ -10,9 +10,9 @@ class ProductRepository {
                 return
             }
 
-            const existe = await ProductModel.findOne({ code: code })
+            const exist = await ProductModel.findOne({ code: code })
 
-            if (existe) {
+            if (exist) {
                 console.log("El codigo ya existe, ingresar uno diferente")
                 return
             }
@@ -30,16 +30,54 @@ class ProductRepository {
 
             await newProduct.save()
 
+            return newProduct
+
         } catch (error) {
             throw new Error("Error al agregar producto en repository");
         }
     }
 
-    async getProducts() {
-
+    async getProducts(limit = 10, page = 1, sort, query) {
         try {
-            const products = await ProductModel.find()
-            return products
+            const skip = (page - 1) * limit;
+            
+            const sortOpt = {};
+            if (sort) {
+                if (sort === 'asc' || sort === 'desc') {
+                    sortOpt.price = sort === 'asc' ? 1 : -1;
+                }
+            }
+
+            let queryOpt = {};
+            if (query) {
+                queryOpt = { category: query };
+            }
+
+            const products = await ProductModel
+                .find(queryOpt)
+                .sort(sortOpt)
+                .skip(skip)
+                .limit(limit)
+
+            const totalProducts = await ProductModel.countDocuments(queryOpt);
+
+            const totalPages = Math.ceil(totalProducts / limit);
+
+            const hasPrevPage = page > 1;
+            const hasNextPage = page < totalPages;
+
+            return {
+                products: products,
+                totalPages,
+                prevPage: hasPrevPage ? page - 1 : null,
+                nextPage: hasNextPage ? page + 1 : null,
+                page,
+                hasPrevPage,
+                hasNextPage,
+                prevLink: hasPrevPage ? `/api/products?limit=${limit}&page=${page - 1}&sort=${sort}&query=${query}` : null,
+                nextLink: hasNextPage ? `/api/products?limit=${limit}&page=${page + 1}&sort=${sort}&query=${query}` : null,
+            };
+
         } catch (error) {
             throw new Error("Error al obtener productos en repository");
         }
@@ -97,8 +135,7 @@ class ProductRepository {
             }
 
             console.log("Producto eliminado")
-            return
-            //return product
+            return product
 
         } catch (error) {
             console.log("Error al eliminar producto")

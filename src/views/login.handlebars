@@ -1,9 +1,11 @@
-<h1>Login</h1>
+<div class="head">
+    <h1>Login</h1>
+</div>
 
 <div class="contenedorLogin">
 
     <div class="card">
-        <form action="/login" method="POST">
+        <form action="/api/users/login" method="POST">
             <label for="email"><b>email</b></label>
             <input type="email" placeholder="Enter Email" name="email" required>
 
@@ -11,7 +13,7 @@
             <input type="password" placeholder="Enter Password" name="password" required>
 
             <button type="submit">Login</button>
-            <button type="submit"><a href="/api/sessions/githubcallback">GitHub</a></button>
+            {{!-- <button type="submit"><a href="/api/sessions/githubcallback">GitHub</a></button> --}}
 
         </form>
         <button type="submit"><a href="/register">Register</a></button>

@@ -1,4 +1,52 @@
-h1 {
+.head {
+    background-color: #333;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.head h1 {
+    margin: 0;
+    color: #fff;
+    font-family: 'Arial Black', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 36px;
+}
+
+.head button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.head button:hover {
+    background-color: #0056b3;
+}
+
+.head a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    margin: 0 10px;
+}
+
+.head a:hover {
+    text-decoration: underline;
+}
+
+h2 {
+    color: green;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+li {
     color: red;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -8,39 +56,133 @@ h1 {
     background-color: teal;
 }
 
-h2 {
-    color: green;
-    text-align: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+.contenedorLogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.contenedorCards {
+.contenedorLogin div {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
     text-align: center;
-    align-content: center;
+}
+
+.contenedorLogin div button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contenedorLogin div a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.contenedorLogin div button a:hover {
+    text-decoration: underline;
+}
+
+.contenedorLogin div form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contenedorLogin div form label {
+    margin-bottom: 8px;
+}
+
+.contenedorLogin div form input {
+    padding: 8px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.contenedorLogin div form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+
+.contenedorCards {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    /* justify-items: center; */
 }
 
 .card {
-    background-color: gold;
-    border: black 2px solid;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
-.card a {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: indigo;
+.card:hover {
+    transform: translateY(-5px);
 }
 
 .card p {
-    font-style: italic;
-    font-size: larger;
+    margin: 10px 0;
+    color: #666;
+}
+
+.card a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.card a:hover {
+    color: #0056b3;
 }
 
 .card button {
-    margin-bottom: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    text-decoration: none;
 }
+
+.card button:hover {
+    background-color: #0056b3;
+}
+
+.card button a {
+    color: inherit;
+    text-decoration: none;
+}
+
 
 form {
     padding: 10px;

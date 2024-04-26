@@ -8,14 +8,13 @@ class CartRepository {
             await newCart.save()
             return newCart
         } catch (error) {
-            console.log("Error al crear nuevo carrito")
-            throw error
+            throw new Error("Error en cart repository");
         }
     }
 
-    async getCartById(id) {
+    async getCartById(idc) {
         try {
-            const cart = await CartModel.findById(id)
+            const cart = await CartModel.findById(idc)
 
             if (!cart) {
                 console.log("Carrito no encontrado")
@@ -25,23 +24,18 @@ class CartRepository {
             return cart
 
         } catch (error) {
-            console.log("Error al mostrar carrito")
-            throw error
+            throw new Error("Error en cart repository");
         }
     }
 
     async addProductToCart(cid, pid, quantity = 1) {
         try {
-            const cart = await CartModel.findById(cid)
+            const cart = await this.getCartById(cid)
 
-            if (!cart) {
-                throw new Error("El carrito no existe");
-            }
+            const existeP = cart.products.findIndex(item => item.product._id.toString() === pid)
 
-            const existeP = cart.products.findIndex(item => item.product.toJSON() === pid)
-
-            if (existeP !== -1 && existeP != undefined) {
-                cart.products[existeP].quantity += quantity;
+            if (existeP /*!== -1 && existeP != undefined*/) {
+                existeP.quantity += quantity;
             } else {
                 cart.products.push({ product: pid, quantity })
             }
@@ -54,34 +48,32 @@ class CartRepository {
             return cart
 
         } catch (error) {
-            console.log("Error al agregar producto al carrito")
-            throw error
+            throw new Error("Error en cart repository");
         }
     }
 
-    async eliminarProductoDelCarrito(cartId, productId) {
+    async deleteCartProduct(cartId, productId) {
         try {
-            const cart = await CartModel.findById(cartId);
+            const cart = await this.getCartById(cartId);
 
             if (!cart) {
                 throw new Error('Carrito no encontrado');
             }
 
-            //cart.products = cart.products.filter(item => item.product.toString() !== productId);
             cart.products = cart.products.filter(item => item.product._id.toString() !== productId);
 
             await cart.save();
             return cart;
+
         } catch (error) {
-            console.error('Error al eliminar el producto del carrito en el gestor', error);
-            throw error;
+            throw new Error("Error en cart repository");
         }
     }
 
 
-    async actualizarCarrito(cartId, updatedProducts) {
+    async updateCart(cartId, updatedProducts) {
         try {
-            const cart = await CartModel.findById(cartId);
+            const cart = await this.getCartById(cartId);
 
             if (!cart) {
                 throw new Error('Carrito no encontrado');
@@ -94,15 +86,15 @@ class CartRepository {
             await cart.save();
 
             return cart;
+
         } catch (error) {
-            console.error('Error al actualizar el carrito en el gestor', error);
-            throw error;
+            throw new Error("Error en cart repository");
         }
     }
 
-    async actualizarCantidadDeProducto(cartId, productId, newQuantity) {
+    async updateQuantityProduct(cartId, productId, newQuantity) {
         try {
-            const cart = await CartModel.findById(cartId);
+            const cart = await this.getCartById(cartId)
 
             if (!cart) {
                 throw new Error('Carrito no encontrado');
@@ -118,16 +110,16 @@ class CartRepository {
 
                 await cart.save();
                 return cart;
+
             } else {
                 throw new Error('Producto no encontrado en el carrito');
             }
         } catch (error) {
-            console.error('Error al actualizar la cantidad del producto en el carrito', error);
-            throw error;
+            throw new Error("Error en cart repository");
         }
     }
 
-    async vaciarCarrito(cartId) {
+    async cleanCart(cartId) {
         try {
             const cart = await CartModel.findByIdAndUpdate(
                 cartId,
@@ -141,8 +133,7 @@ class CartRepository {
 
             return cart;
         } catch (error) {
-            console.error('Error al vaciar el carrito en el gestor', error);
-            throw error;
+            throw new Error("Error en cart repository");
         }
     }
 

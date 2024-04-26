@@ -1,33 +1,24 @@
-{{!-- <h1>Productos realtime</h1>
+<h1>Real Time Products</h1>
 <h2>Productos actualizados en tiempo real</h2>
 
 <div id="contenedorProductos"></div>
 
-<h2>Formulario para Agregar Productos</h2>
+<h2>Formulario para agregar productos</h2>
+
 <form>
-    <p>Title: </p>
-    <input type="text" name="" id="title" placeholder="Title">
-    <p>Description: </p>
-    <input type="text" name="" id="description" placeholder="Description">
-    <p>Price: </p>
-    <input type="number" name="" id="price" placeholder="Price">
-    <p>Img: </p>
-    <input type="text" name="" id="thumbnails" value="Sin Imagen">
-    <p>Code: </p>
-    <input type="text" name="" id="code" placeholder="Code">
-    <p>Stock: </p>
-    <input type="number" name="" id="stock" placeholder="Stock">
-    <p>Category: </p>
-    <input type="text" name="" id="category" placeholder="Category">
-    {{!-- <p>Status: </p> --}}
-    {{!-- <select id="status">
-        <option value="true">Enabled</option>
-        <option value="false">Disabled</option>
-    </select> --}}
-    <br>
-    <button id="btnEnviar">Enviar</button>
+    <input type="text" id="title" placeholder="Titulo">
+    <input type="text" id="description" placeholder="Descripcion">
+    <input type="number" id="price" placeholder="Precio">
+    <input type="text" id="img" value="Sin Imagen">
+    <input type="text" id="code" placeholder="Código">
+    <input type="number" id="stock" placeholder="Stock">
+    <input type="text" id="category" placeholder="Categoria">
+    <select id="status">
+        <option value="true"> Activo </option>
+        <option value="false"> Inactivo </option>
+    </select>
+    <button type="button" id="btnEnviar"> Enviar </button>
 </form>
 
-
 <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
-<script src="/js/main.js"></script> --}}
+<script src="js/realtime.js"></script>
