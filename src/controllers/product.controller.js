@@ -1,3 +1,4 @@
+const { trusted } = require("mongoose");
 const ProductRepository = require("../repositories/products.repository.js");
 const productRepository = new ProductRepository();
 
@@ -33,14 +34,14 @@ class ProductController {
 
         try {
             const product = await productRepository.getProductById(id)
-
+            
             if (!product) {
                 return res.json({
                     error: "No se encontro el producto"
                 });
             }
 
-            res.json(product)
+            res.json(product);
 
         } catch (error) {
             res.status(500).send("Error en product controller");

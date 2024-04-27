@@ -37,10 +37,10 @@ class ProductRepository {
         }
     }
 
-    async getProducts(limit = 10, page = 1, sort, query) {
+    async getProducts(limit, page, sort, query) {
         try {
             const skip = (page - 1) * limit;
-            
+
             const sortOpt = {};
             if (sort) {
                 if (sort === 'asc' || sort === 'desc') {
@@ -74,8 +74,8 @@ class ProductRepository {
                 page,
                 hasPrevPage,
                 hasNextPage,
-                prevLink: hasPrevPage ? `/api/products?limit=${limit}&page=${page - 1}&sort=${sort}&query=${query}` : null,
-                nextLink: hasNextPage ? `/api/products?limit=${limit}&page=${page + 1}&sort=${sort}&query=${query}` : null,
+                prevLink: hasPrevPage ? `/products?limit=${limit}&page=${page - 1}&sort=${sortOpt}&query=${queryOpt}` : null,
+                nextLink: hasNextPage ? `/products?limit=${limit}&page=${page + 1}&sort=${sortOpt}&query=${queryOpt}` : null,
             };
 
         } catch (error) {

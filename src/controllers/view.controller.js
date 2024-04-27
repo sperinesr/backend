@@ -5,11 +5,15 @@ const cartRepository = new CartRepository();
 class ViewsController {
     async renderProducts(req, res) {
         try {
-            const { page = 1, limit = 3 } = req.query;
+            const page = req.query.page || 1;
+            const limit = req.query.limit || 3
 
             const skip = (page - 1) * limit;
 
-            const products = await ProductModel.find().skip(skip).limit(limit);
+            const products = await ProductModel
+                .find()
+                .skip(skip)
+                .limit(limit);
 
             const totalProducts = await ProductModel.countDocuments();
 
@@ -32,13 +36,41 @@ class ViewsController {
                 hasNextPage,
                 prevPage: page > 1 ? parseInt(page) - 1 : null,
                 nextPage: page < totalPages ? parseInt(page) + 1 : null,
-                currentPage: parseInt(page),
+                currentPage: page,
                 totalPages,
                 cartId
             });
 
         } catch (error) {
             console.error("Error al obtener productos", error);
+            res.status(500).json({
+                status: 'error',
+                error: "Error en view controller"
+            });
+        }
+    }
+
+    async renderProduct(req, res) {
+
+        const pid = req.params.pid;
+
+        try {
+            const product = await ProductModel.findById(pid)
+
+            // const newArray = product.map(product => {
+            //     const { _id, ...rest } = product.toObject();
+            //     return { id: _id, ...rest }; // Agregar el ID al objeto
+            // });
+
+            const cartId = req.user.cart.toString();
+
+            res.render("products", {
+                products: product,
+                cartId
+            });
+
+        } catch (error) {
+            console.error("Error al obtener producto", error);
             res.status(500).json({
                 status: 'error',
                 error: "Error en view controller"
@@ -104,7 +136,7 @@ class ViewsController {
     }
 
     async renderHome(req, res) {
-        res.render("profile");
+        res.render("login");
     }
 }
 

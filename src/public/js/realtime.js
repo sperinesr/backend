@@ -1,6 +1,6 @@
 const socket = io();
 
-socket.on("productos", (data) => {
+socket.on("products", (data) => {
     //console.log(data);
     renderProductos(data);
 })
@@ -42,7 +42,7 @@ document.getElementById("btnEnviar").addEventListener("click", () => {
 
 
 const agregarProducto = () => {
-    const producto = {
+    const product = {
         title: document.getElementById("title").value,
         description: document.getElementById("description").value,
         price: document.getElementById("price").value,
@@ -53,5 +53,5 @@ const agregarProducto = () => {
         status: document.getElementById("status").value === "true",
     };
 
-    socket.emit("agregarProducto", producto);
+    socket.emit("agregarProducto", product);
 }

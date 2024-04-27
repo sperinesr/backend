@@ -1,13 +1,18 @@
 <div class="head">
     <h1>Products</h1>
 
+
+    <button><a href="/api/users/profile">Profile</a></button>
     {{#if this.isAdmin}}
     <button><a href="/realtimeproducts"> Modificar Productos </a></button>
     {{else}}
-    <button><a href="/api/products"> Store </a></button>
+    <button><a href="/products"> Store </a></button>
     <button><a href="/chat"> Live Chat</a></button>
+    <button><a href="/carts/{{cartId}}"> Cart</a></button>
     {{/if}}
-    <button><a href="/logout">Logout</a></button>
+    <form action="/api/users/logout" method="POST" style="border: 0px;">
+        <button type="submit">Logout</button>
+    </form>
 
 </div>
 
@@ -15,16 +20,16 @@
 
     {{#each products}}
     <div class="card">
-        <p>Id: <a href="/api/products/{{this.id}}">{{this.id}}</a></p>
+        <p>Id: <a href="/products/{{this.id}}">{{this.id}}</a></p>
         <p>Title: {{this.title}}</p>
         <p>Description: {{this.description}}</p>
         <p>Price: ${{this.price}}</p>
         <p>Stock: {{this.stock}}</p>
         <p>Image: {{this.thumbnail}}</p>
-        {{!-- <form action="/api/cart/{{...user.cart}}/products/{{this.id}}" method="post">
-            <button type="submit">Agregar al Carrito</button>
-        </form> --}}
-        <button><a href="/api/cart/{{...cartId}}/products/{{this.id}}">Add to Cart</a></button>
+        <form action="/api/carts/{{...cartId}}/products/{{this.id}}" method="post">
+            <button>Add to Cart</button>
+        </form>
+
     </div>
     {{/each}}
 
@@ -32,14 +37,14 @@
 
 <div class="pagination">
     {{#if hasPrevPage}}
-    <a href="/api/products?limit={{limit}}&page={{prevPage}}&sort={{sort}}&query={{query}}">Anterior</a>
+    <a href="/products?limit={{limit}}&page={{prevPage}}&sort={{sort}}&query={{query}}">Prev</a>
     {{/if}}
 
     {{#if hasNextPage}}
-    <a href="/api/products?limit={{limit}}&page={{nextPage}}&sort={{sort}}&query={{query}}">Siguiente</a>
+    <a href="/products?limit={{limit}}&page={{nextPage}}&sort={{sort}}&query={{query}}">Next</a>
     {{/if}}
 
     {{#if totalPages}}
-    <p>Pagina {{currentPage}} de {{totalPages}}</p>
+    <p>Page {{currentPage}} of {{totalPages}}</p>
     {{/if}}
 </div>

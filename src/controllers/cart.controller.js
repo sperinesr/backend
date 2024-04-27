@@ -25,21 +25,22 @@ class CartController {
             }
             res.json(productos);
         } catch (error) {
-            res.status(500).send("Error");
+            res.status(500).send("Error en cart controller");
         }
     }
 
     async addProductsToCart(req, res) {
         const cartId = req.params.cid;
         const productId = req.params.pid;
-        const quantity = req.body.quantity || 1;
+        // const quantity = req.body.quantity || 1;
         try {
-            await cartRepository.addProductToCart(cartId, productId, quantity);
+            await cartRepository.addProductToCart(cartId, productId, quantity = 1);
             const carritoID = (req.user.cart).toString();
+            console.log(carritoID)
 
             res.redirect(`/carts/${carritoID}`)
         } catch (error) {
-            res.status(500).send("Error");
+            res.status(500).send("Error en cart controller");
         }
     }
 
@@ -54,7 +55,7 @@ class CartController {
                 updatedCart,
             });
         } catch (error) {
-            res.status(500).send("Error");
+            res.status(500).send("Error en cart controller");
         }
     }
 
@@ -66,7 +67,7 @@ class CartController {
             const updatedCart = await cartRepository.updateCart(cartId, updatedProducts);
             res.json(updatedCart);
         } catch (error) {
-            res.status(500).send("Error");
+            res.status(500).send("Error en cart controller");
         }
     }
 
@@ -100,7 +101,7 @@ class CartController {
             });
 
         } catch (error) {
-            res.status(500).send("Error");
+            res.status(500).send("Error en cart controller");
         }
     }
 
@@ -149,7 +150,7 @@ class CartController {
             res.status(200).json({ productosNoDisponibles });
         } catch (error) {
             console.error('Error al procesar la compra:', error);
-            res.status(500).json({ error: 'Error interno del servidor' });
+            res.status(500).json({ error: 'Error en cart controller' });
         }
     }
 

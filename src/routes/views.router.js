@@ -6,6 +6,7 @@ const checkUserRole = require("../middleware/checkrole.js");
 const passport = require("passport");
 
 router.get("/products", checkUserRole(['user']), passport.authenticate('jwt', { session: false }), viewsController.renderProducts);
+router.get("/products/:pid", checkUserRole(['user']), passport.authenticate('jwt', { session: false }), viewsController.renderProduct);
 
 router.get("/carts/:cid", viewsController.renderCart);
 router.get("/login", viewsController.renderLogin);
