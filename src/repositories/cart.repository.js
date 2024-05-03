@@ -1,5 +1,10 @@
 const CartModel = require("../models/cart.model.js")
 
+// control de errores
+const { generarInfoError } = require("../services/errors/info.js")
+const { EErrors } = require("../services/errors/enums.js")
+const CustomError = require("../services/errors/custom-error.js")
+
 class CartRepository {
 
     async addCart() {
@@ -28,16 +33,26 @@ class CartRepository {
         }
     }
 
-    async addProductToCart(cid, pid, quantity = 1) {
+    async addProductToCart(cid, pid) {
+
         try {
             const cart = await this.getCartById(cid)
 
             const existeP = cart.products.findIndex(item => item.product._id.toString() === pid)
 
-            if (existeP /*!== -1 && existeP != undefined*/) {
-                existeP.quantity += quantity;
+            if (!cart) {
+                throw CustomError.crearError({
+                    nombre: "agregar producto al carro",
+                    causa: generarInfoError(cart),
+                    mensaje: "Error al intentar agregar productos al carrito ",
+                    codigo: EErrors.TIPO_INVALIDO
+                })
+            };
+
+            if (existeP !== -1) {
+                cart.products[existeP].quantity += 1;
             } else {
-                cart.products.push({ product: pid, quantity })
+                cart.products.push({ product: pid, quantity: 1 })
             }
 
             // marcar propiedad products como modificada
@@ -46,6 +61,7 @@ class CartRepository {
             await cart.save()
 
             return cart
+
 
         } catch (error) {
             throw new Error("Error en cart repository");

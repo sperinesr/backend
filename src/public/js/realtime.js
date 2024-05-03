@@ -5,9 +5,11 @@ socket.on("products", (data) => {
     renderProductos(data);
 })
 
+
 //Función para renderizar nuestros productos: 
 
 const renderProductos = (products) => {
+
     const conteinerProducts = document.getElementById("contenedorProductos");
     conteinerProducts.innerHTML = "";
 

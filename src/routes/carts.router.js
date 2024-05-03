@@ -19,4 +19,7 @@ router.put('/:cid/products/:pid', cartController.updateQuantity);
 // limpiar
 router.delete('/:cid', cartController.cleanCart);
 
+//comprar
+router.post("/:cid", cartController.finalizarCompra)
+
 module.exports = router;

@@ -55,17 +55,17 @@ class ViewsController {
         const pid = req.params.pid;
 
         try {
-            const product = await ProductModel.findById(pid)
+            const product = await ProductModel.find({ _id: pid })
 
-            // const newArray = product.map(product => {
-            //     const { _id, ...rest } = product.toObject();
-            //     return { id: _id, ...rest }; // Agregar el ID al objeto
-            // });
+            const newProduct = product.map(product => {
+                const { _id, ...rest } = product.toObject();
+                return { id: _id, ...rest }; // Agregar el ID al objeto
+            });
 
             const cartId = req.user.cart.toString();
 
             res.render("products", {
-                products: product,
+                products: newProduct,
                 cartId
             });
 

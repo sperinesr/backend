@@ -6,6 +6,8 @@ const ProductRepository = require("../repositories/products.repository.js");
 const productRepository = new ProductRepository();
 const { generateUniqueCode, calcularTotal } = require("../utils/cartutils.js");
 
+
+
 class CartController {
     async newCart(req, res) {
         try {
@@ -34,11 +36,10 @@ class CartController {
         const productId = req.params.pid;
         // const quantity = req.body.quantity || 1;
         try {
-            await cartRepository.addProductToCart(cartId, productId, quantity = 1);
-            const carritoID = (req.user.cart).toString();
-            console.log(carritoID)
+            await cartRepository.addProductToCart(cartId, productId)
 
-            res.redirect(`/carts/${carritoID}`)
+            res.redirect(`/products`)
+
         } catch (error) {
             res.status(500).send("Error en cart controller");
         }
@@ -111,6 +112,7 @@ class CartController {
         try {
             // Obtener el carrito y sus productos
             const cart = await cartRepository.getCartById(cartId);
+
             const products = cart.products;
 
             // Inicializar un arreglo para almacenar los productos no disponibles
