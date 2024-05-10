@@ -6,8 +6,6 @@ const ProductRepository = require("../repositories/products.repository.js");
 const productRepository = new ProductRepository();
 const { generateUniqueCode, calcularTotal } = require("../utils/cartutils.js");
 
-
-
 class CartController {
     async newCart(req, res) {
         try {

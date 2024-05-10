@@ -14,5 +14,7 @@ router.get("/register", viewsController.renderRegister);
 router.get("/realtimeproducts", checkUserRole(['admin']), viewsController.renderRealTimeProducts);
 router.get("/chat", checkUserRole(['user']), viewsController.renderChat);
 router.get("/", viewsController.renderHome);
+// logger
+router.get("/loggertest", viewsController.renderLoggerTest);
 
 module.exports = router;

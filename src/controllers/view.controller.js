@@ -1,6 +1,10 @@
 const ProductModel = require("../models/product.model.js");
 const CartRepository = require("../repositories/cart.repository.js");
 const cartRepository = new CartRepository();
+// logger
+const LoggerRepository = require("../repositories/logger.repository.js")
+const loggerRepository = new LoggerRepository()
+
 
 class ViewsController {
     async renderProducts(req, res) {
@@ -137,6 +141,26 @@ class ViewsController {
 
     async renderHome(req, res) {
         res.render("login");
+    }
+
+    async renderLoggerTest(req, res) {
+        try {
+            const logs = await loggerRepository.getLogs()
+
+            const newLogs = logs.map(log => {
+                const { _id, ...rest } = log.toObject();
+                return { id: _id, ...rest };
+            });
+
+            res.render("loggertest", { logs: newLogs });
+
+        } catch (error) {
+            await loggerRepository.addLog(error)
+            console.error("Error al obtener logs", error);
+            res.status(500).json({ error: "Error interno del servidor" });
+        }
+
+
     }
 }
 
