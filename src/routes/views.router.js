@@ -11,10 +11,15 @@ router.get("/products/:pid", checkUserRole(['user']), passport.authenticate('jwt
 router.get("/carts/:cid", viewsController.renderCart);
 router.get("/login", viewsController.renderLogin);
 router.get("/register", viewsController.renderRegister);
-router.get("/realtimeproducts", checkUserRole(['admin']), viewsController.renderRealTimeProducts);
-router.get("/chat", checkUserRole(['user']), viewsController.renderChat);
+router.get("/realtimeproducts", checkUserRole(['admin', 'premium']), viewsController.renderRealTimeProducts);
+router.get("/chat", checkUserRole(['user','premium']), viewsController.renderChat);
 router.get("/", viewsController.renderHome);
 // logger
 router.get("/loggertest", viewsController.renderLoggerTest);
+
+// integradora 3
+router.get("/passwordreset", viewsController.renderPasswordReset);
+router.get("/password", viewsController.renderChangePassword);
+router.get("/sendconfirmation", viewsController.renderConfirmation);
 
 module.exports = router;

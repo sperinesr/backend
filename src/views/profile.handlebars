@@ -5,9 +5,18 @@
 
     {{#if this.isAdmin}}
     <button><a href="/realtimeproducts"> Modificar Productos </a></button>
-    {{else}}
+    {{/if}}
+
+    {{#if this.isUser}}
     <button><a href="/products"> Store </a></button>
     <button><a href="/chat"> Live Chat</a></button>
+    <button><a href="/api/users/premium/{{user.id}}">Change Role</a></button>
+    {{/if}}
+
+    {{#if this.isPremium}}
+    <button><a href="/realtimeproducts"> Modificar Productos </a></button>
+    <button><a href="/chat"> Live Chat</a></button>
+    <button><a href="/api/users/premium/{{user.id}}">Change Role</a></button>
     {{/if}}
 
     <form action="/api/users/logout" method="POST" style="border: 0px;">

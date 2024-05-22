@@ -10,5 +10,10 @@ router.get("/profile", passport.authenticate("jwt", { session: false }), userCon
 router.post("/logout", userController.logout.bind(userController));
 router.get("/admin", passport.authenticate("jwt", { session: false }), userController.admin);
 
+// integradora 3
+router.post("/requestpasswordreset", userController.requestPasswordReset)
+router.post("/passwordreset", userController.resetPassword)
+router.get("/premium/:uid", userController.cambiarRolPremium)
+
 module.exports = router;
 

@@ -11,11 +11,12 @@ class ViewsController {
         try {
             const page = req.query.page || 1;
             const limit = req.query.limit || 3
+            const uid = req.user.id
 
             const skip = (page - 1) * limit;
 
             const products = await ProductModel
-                .find()
+                .find({ owner: { $ne: uid.toString() } })
                 .skip(skip)
                 .limit(limit);
 
@@ -25,7 +26,6 @@ class ViewsController {
 
             const hasPrevPage = page > 1;
             const hasNextPage = page < totalPages;
-
 
             const newArray = products.map(product => {
                 const { _id, ...rest } = product.toObject();
@@ -128,7 +128,7 @@ class ViewsController {
 
     async renderRealTimeProducts(req, res) {
         try {
-            res.render("realtimeproducts");
+            res.render("realtimeproducts", { owner: req.user.id.toString(), role: req.user.role.toString() });
         } catch (error) {
             console.log("error en la vista real time", error);
             res.status(500).json({ error: "Error interno del servidor" });
@@ -160,7 +160,20 @@ class ViewsController {
             res.status(500).json({ error: "Error interno del servidor" });
         }
 
+    }
 
+    // integradora 3
+
+    async renderPasswordReset(req, res) {
+        res.render("passwordreset")
+    }
+
+    async renderChangePassword(req, res) {
+        res.render("changepassword")
+    }
+
+    async renderConfirmation(req, res) {
+        res.render("sendconfirmation")
     }
 }
 

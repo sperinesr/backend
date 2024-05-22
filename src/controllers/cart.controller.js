@@ -104,7 +104,7 @@ class CartController {
         }
     }
 
-    //Ultima Pre Entrega: 
+    //tercera Pre Entrega: 
     async finalizarCompra(req, res) {
         const cartId = req.params.cid;
         try {

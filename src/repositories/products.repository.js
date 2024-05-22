@@ -2,7 +2,7 @@ const ProductModel = require("../models/product.model.js")
 
 class ProductRepository {
 
-    async addProduct({ title, description, code, price, stock, category, thumbnail }) {
+    async addProduct({ title, description, code, price, stock, category, thumbnail, owner }) {
 
         try {
             if (!title || !description || !code || !price || !stock || !category) {
@@ -10,9 +10,13 @@ class ProductRepository {
                 return
             }
 
+            console.log(title, description, code, price, stock, category, thumbnail, owner)
+
             const exist = await ProductModel.findOne({ code: code })
 
-            if (exist) {
+            console.log(exist)
+
+            if (exist !== null) {
                 console.log("El codigo ya existe, ingresar uno diferente")
                 return
             }
@@ -25,12 +29,15 @@ class ProductRepository {
                 status: true,
                 stock: stock,
                 category: category,
-                thumbnail: thumbnail || []
+                thumbnail: thumbnail || [],
+                owner: owner
             })
+
+            console.log(newProduct)
 
             await newProduct.save()
 
-            return newProduct
+            return { products: newProduct }
 
         } catch (error) {
             throw new Error("Error al agregar producto en repository");
@@ -80,6 +87,26 @@ class ProductRepository {
 
         } catch (error) {
             throw new Error("Error al obtener productos en repository");
+        }
+    }
+
+    async getProducts2() {
+
+        try {
+
+            const products = await ProductModel.find()
+
+            if (!products) {
+                console.log("Productos no encontrados")
+                return null
+            }
+
+            console.log("Productos encontrados")
+            return products
+
+        } catch (error) {
+            console.log("Error al obtener productos")
+            throw error
         }
     }
 

@@ -10,8 +10,18 @@ const productSchema = new mongoose.Schema({
   status: { type: Boolean, required: true },
   stock: { type: Number, required: true },
   category: { type: String, required: true },
-  thumbnail: { type: [String] }
+  thumbnail: { type: [String] },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users"
+  }
 })
+
+productSchema.pre('findOne', function (next) {
+  this.populate('owner', '_id role');
+  next();
+});
+
 // paginacion
 productSchema.plugin(mongoosePaginate)
 
