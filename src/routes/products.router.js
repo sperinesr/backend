@@ -11,7 +11,7 @@ router.get("/:pid", productController.getProduct);
 // crear
 router.post("/", productController.createProduct);
 // actualizar
-router.put("/", productController.updateProduct);
+router.put("/:pid", productController.updateProduct);
 // eliminar
 router.delete("/:pid", productController.deleteProduct);
 

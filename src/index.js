@@ -51,6 +51,37 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/users", userRouter);
 app.use("/", viewsRouter, mockRouter, loggerRouter);
 
+
+// Desafio 8 clase 39
+// import swaggerJSDoc from 'swagger-jsdoc'
+// import swaggerUiExpress from 'swagger-ui-express';
+
+const SwaggerJSDoc = require("swagger-jsdoc")
+const swaggerJSDoc = SwaggerJSDoc
+
+const SwaggerUiExpress = require("swagger-ui-express")
+const swaggerUiExpress = SwaggerUiExpress
+
+// 3) creamos objeto de configuracion: swaggerOptions, tambien creamos las carpetas src/docs...
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1",
+        info: {
+            title: "Documentacion de la app E-commerce",
+            description: "App web dedicada compras y gestion de productos a vender"
+        }
+    },
+    apis: ["./src/docs/**/*.yaml"] //trucazo para leer todos los archivo a la vez de manera recursiva
+}
+
+// 4) conectamos swagger a nuestro servidor de express
+const specs = swaggerJSDoc(swaggerOptions)
+
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
+
+
+
 const httpServer = app.listen(PUERTO, () => {
     console.log(`Servidor escuchando en el puerto ${PUERTO}`);
 });
@@ -58,3 +89,6 @@ const httpServer = app.listen(PUERTO, () => {
 ///Websockets: 
 const SocketManager = require("./sockets/socketmanager.js");
 new SocketManager(httpServer);
+
+
+
