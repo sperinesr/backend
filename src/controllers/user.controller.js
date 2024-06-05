@@ -10,7 +10,9 @@ const EmailManager = require("../services/email.js")
 const emailManager = new EmailManager()
 
 class UserController {
+
     async register(req, res) {
+
         const { first_name, last_name, email, password, age } = req.body;
         try {
             const existeUsuario = await UserModel.findOne({ email });
@@ -42,7 +44,9 @@ class UserController {
                 httpOnly: true
             });
 
-            res.redirect("/api/users/profile");
+            // res.status(200).redirect("/api/users/profile")
+            res.send({ user: nuevoUsuario });
+
         } catch (error) {
             console.error(error);
             res.status(500).send("Error interno del servidor");

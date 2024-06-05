@@ -7,8 +7,10 @@ class ProductController {
     async createProduct(req, res) {
         const newProduct = req.body;
         try {
-            await productRepository.addProduct(newProduct);
-            res.status(200).send("producto creado");
+            const product = await productRepository.addProduct(newProduct);
+
+            // res.status(200).send("producto creado");
+            res.send({ products: product })
         } catch (error) {
             res.status(500).send("Error en product controller");
         }
@@ -21,7 +23,7 @@ class ProductController {
 
             const products = await productRepository.getProducts(limit, page, sort, query)
 
-            res.json(products);
+            res.send(products)
 
         } catch (error) {
             res.status(500).send("Error en product controller");
@@ -34,7 +36,7 @@ class ProductController {
 
         try {
             const product = await productRepository.getProductById(id)
-            
+
             if (!product) {
                 return res.json({
                     error: "No se encontro el producto"
@@ -67,8 +69,10 @@ class ProductController {
         const id = req.params.pid;
 
         try {
-            const deleted = await productRepository.deleteProduct(id);
-            res.json("producto: " + deleted.title + " eliminado");
+            const product = await productRepository.deleteProduct(id);
+
+            res.status(200).send(product);
+
         } catch (error) {
             res.status(500).send("Error en product controller");
         }

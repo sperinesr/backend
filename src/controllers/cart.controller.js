@@ -34,9 +34,10 @@ class CartController {
         const productId = req.params.pid;
         // const quantity = req.body.quantity || 1;
         try {
-            await cartRepository.addProductToCart(cartId, productId)
+            const cart = await cartRepository.addProductToCart(cartId, productId)
 
-            res.redirect(`/products`)
+            // res.status(200).send({ cart: cart })
+            res.status(303).redirect('/products');
 
         } catch (error) {
             res.status(500).send("Error en cart controller");
