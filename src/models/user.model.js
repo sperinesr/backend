@@ -42,6 +42,15 @@ const userSchema = mongoose.Schema({
     resetToken: {
         token: String,
         expire: Date
+    },
+    // cuarta integradoras
+    documents: [{
+        name: String,
+        reference: String
+    }],
+    last_connection: {
+        type: Date,
+        default: Date.now
     }
 });
 

@@ -1,4 +1,4 @@
-const UserModel = require("../models/user.model.js");
+const UserModel = require("../models/user.model.js"); //hay que cambiarlo por el repositorio
 const CartModel = require("../models/cart.model.js");
 const jwt = require("jsonwebtoken");
 const { createHash, isValidPassword } = require("../utils/hashbcrypt.js");
@@ -71,6 +71,10 @@ class UserController {
                 expiresIn: "1h"
             });
 
+            // cuarta integradora
+            usuarioEncontrado.last_connection = new Date()
+            await usuarioEncontrado.save()
+
             res.cookie("coderCookieToken", token, {
                 maxAge: 3600000,
                 httpOnly: true
@@ -93,6 +97,18 @@ class UserController {
     }
 
     async logout(req, res) {
+        if (req.user) {
+            try {
+                //cuarta integradora
+                req.user.last_connection = new Date();
+                await req.user.save();
+            } catch (error) {
+                console.error(error);
+                res.status(500).send("Error interno del servidor");
+                return;
+            }
+        }
+
         res.clearCookie("coderCookieToken");
         res.redirect("/login");
     }
@@ -191,11 +207,24 @@ class UserController {
                 return res.status(404).send("Usuario no encontrado");
             }
 
+            // verificar al usuario y su documentacion
+            const documentacionRequerida = ["Identificacion", "Comprobante de domicilio", "Comprobante de estado de cuenta"]
+
+            const userDocuments = user.documents.map(doc => doc.name)
+
+            const tieneDocumentacion = documentacionRequerida.every(doc => userDocuments.includes(doc))
+
+            if (!tieneDocumentacion) {
+                return res.status(400).send("Usuario debe completar toda la documentacion requerida")
+            }
+
+            // cambiamos rol
             const nuevoRol = user.role === "user" ? "premium" : "user";
 
             const actualizado = await UserModel.findByIdAndUpdate(uid, { role: nuevoRol });
 
-            res.redirect("/api/users/profile")
+            res.redirect("/")
+            res.json(nuevoRol)
         } catch (error) {
             res.status(500).send("Error del servidor vamos a re morir");
         }
