@@ -2,7 +2,13 @@
 <h2>Productos actualizados en tiempo real</h2>
 <button><a href="/api/users/profile">Profile</a></button>
 
-<div id="contenedorProductos"></div>
+{{#if products}}
+<div id="contenedorProductos">
+
+</div>
+{{else}}
+<p>No se encontraron productos.</p>
+{{/if}}
 
 <h2>Formulario para agregar productos</h2>
 

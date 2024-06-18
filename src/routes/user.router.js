@@ -33,9 +33,8 @@ router.post("/:uid/documents", upload.fields([{ name: "documents" }, { name: "pr
         }
 
         // verificamos si se suben los docs y se actualiza el usuario
-
         if (uploadedDocuments.documents) {
-            user.document = user.documents.concat(uploadedDocuments.documents.map
+            user.documents = user.documents.concat(uploadedDocuments.documents.map
                 (doc => ({
                     name: doc.originalname,
                     reference: doc.path
@@ -44,7 +43,7 @@ router.post("/:uid/documents", upload.fields([{ name: "documents" }, { name: "pr
         }
 
         if (uploadedDocuments.products) {
-            user.document = user.documents.concat(uploadedDocuments.products.map
+            user.documents = user.documents.concat(uploadedDocuments.products.map
                 (doc => ({
                     name: doc.originalname,
                     reference: doc.path
@@ -53,7 +52,7 @@ router.post("/:uid/documents", upload.fields([{ name: "documents" }, { name: "pr
         }
 
         if (uploadedDocuments.profiles) {
-            user.document = user.documents.concat(uploadedDocuments.profiles.map
+            user.documents = user.documents.concat(uploadedDocuments.profiles.map
                 (doc => ({
                     name: doc.originalname,
                     reference: doc.path
@@ -67,7 +66,7 @@ router.post("/:uid/documents", upload.fields([{ name: "documents" }, { name: "pr
         res.status(200).send("Archivos subidos")
 
     } catch (error) {
-        res.status(500).send("Error en router")
+        res.status(500).send("Error en router al subir documentos")
     }
 })
 

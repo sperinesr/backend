@@ -127,8 +127,21 @@ class ViewsController {
     }
 
     async renderRealTimeProducts(req, res) {
+
         try {
-            res.render("realtimeproducts", { owner: req.user.id.toString(), role: req.user.role.toString() });
+
+            const products = await ProductModel.find();
+            const newProducts = products.map(product => {
+                const { _id, ...rest } = product.toObject();
+                return { id: _id, ...rest };
+            });
+
+            res.render("realtimeproducts", {
+                owner: req.user.id.toString(),
+                role: req.user.role.toString(),
+                products: newProducts
+            });
+
         } catch (error) {
             console.log("error en la vista real time", error);
             res.status(500).json({ error: "Error interno del servidor" });

@@ -25,7 +25,7 @@
         <p>Description: {{this.description}}</p>
         <p>Price: ${{this.price}}</p>
         <p>Stock: {{this.stock}}</p>
-        <p>Image: {{this.thumbnail}}</p>
+        <img src="{{this.thumbnail}}" alt="Imagen del producto">
         <form action="/api/carts/{{...cartId}}/products/{{this.id}}" method="post">
             <button>Add to Cart</button>
         </form>

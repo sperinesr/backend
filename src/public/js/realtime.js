@@ -10,25 +10,26 @@ socket.on("productos", (data) => {
 
 //Función para renderizar nuestros productos: 
 
-const renderProductos = (productos) => {
+const renderProductos = (products) => {
 
     const conteinerProducts = document.getElementById("contenedorProductos");
     conteinerProducts.innerHTML = "";
 
-    productos.docs.forEach(item => {
+    products.products.forEach(item => {
         const card = document.createElement("div");
         card.classList.add("card");
 
         card.innerHTML = ` 
                         <p> ${item.title} </p>
                         <p> ${item.price} </p>
+                        <img src="${item.thumbnail}" alt="Imagen del producto">
                         <button> Eliminar </button>
                         `;
 
         conteinerProducts.appendChild(card);
         //Agregamos el evento al boton de eliminar: 
         card.querySelector("button").addEventListener("click", () => {
-            // le quite la validacion del rol, porque el usuario ya es premium y solo debo isar el id para identificar al owner
+            // le quite la validacion del rol, porque el usuario ya es premium y solo debo usar el id para identificar al owner
             if (/*role === "premium" &&*/ item.owner === owner) {
                 eliminarProducto(item._id);
             } else if (role === "admin") {

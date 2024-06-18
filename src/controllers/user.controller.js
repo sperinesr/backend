@@ -1,4 +1,5 @@
-const UserModel = require("../models/user.model.js"); //hay que cambiarlo por el repositorio
+const UserRepository = require("../repositories/user.repository.js"); //hay que cambiarlo por el repositorio
+const userRepository = new UserRepository()
 const CartModel = require("../models/cart.model.js");
 const jwt = require("jsonwebtoken");
 const { createHash, isValidPassword } = require("../utils/hashbcrypt.js");
@@ -15,7 +16,7 @@ class UserController {
 
         const { first_name, last_name, email, password, age } = req.body;
         try {
-            const existeUsuario = await UserModel.findOne({ email });
+            const existeUsuario = await userRepository.findByEmail({ email });
             if (existeUsuario) {
                 return res.status(400).send("El usuario ya existe");
             }
@@ -56,7 +57,7 @@ class UserController {
     async login(req, res) {
         const { email, password } = req.body;
         try {
-            const usuarioEncontrado = await UserModel.findOne({ email });
+            const usuarioEncontrado = await userRepository.findByEmail(email);
 
             if (!usuarioEncontrado) {
                 return res.status(401).send("Usuario no válido");
@@ -126,7 +127,7 @@ class UserController {
         const { email } = req.body;
         try {
             //Buscar el usuario por su correo electrónico.
-            const user = await UserModel.findOne({ email });
+            const user = await userRepository.findByEmail(email);
 
             if (!user) {
                 //Si no hay usuario tiro error y el metodo termina aca. 
@@ -160,7 +161,7 @@ class UserController {
 
         try {
             //Busco al usuario:
-            const user = await UserModel.findOne({ email });
+            const user = await userRepository.findByEmail(email);
             if (!user) {
                 return res.render("changepassword", { error: "Usuario no encontrado" });
             }
@@ -201,7 +202,7 @@ class UserController {
 
         try {
             //Busco el usuario: 
-            const user = await UserModel.findById(uid);
+            const user = await userRepository.findById(uid);
 
             if (!user) {
                 return res.status(404).send("Usuario no encontrado");
@@ -212,19 +213,26 @@ class UserController {
 
             const userDocuments = user.documents.map(doc => doc.name)
 
-            const tieneDocumentacion = documentacionRequerida.every(doc => userDocuments.includes(doc))
+            // const tieneDocumentacion = documentacionRequerida.every(doc => userDocuments.includes(doc))
 
-            if (!tieneDocumentacion) {
+            // if (!tieneDocumentacion) {
+            //     return res.status(400).send("Usuario debe completar toda la documentacion requerida")
+            // }
+
+            if (!userDocuments.lenght == 3) {
                 return res.status(400).send("Usuario debe completar toda la documentacion requerida")
             }
 
             // cambiamos rol
             const nuevoRol = user.role === "user" ? "premium" : "user";
+            user.role = nuevoRol
 
-            const actualizado = await UserModel.findByIdAndUpdate(uid, { role: nuevoRol });
+            // guardamos
+            await user.save()
 
+            // res.send(nuevoRol)
             res.redirect("/")
-            res.json(nuevoRol)
+
         } catch (error) {
             res.status(500).send("Error del servidor vamos a re morir");
         }

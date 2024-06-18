@@ -7,18 +7,15 @@ class ProductRepository {
         try {
             if (!title || !description || !code || !price || !stock || !category) {
                 console.log("Todos los campos deben ingresarse")
-                // return
+                return
             }
-
-            // console.log(title, description, code, price, stock, category, thumbnail, owner)
 
             const exist = await ProductModel.findOne({ code: code })
 
-            // console.log(exist)
 
             if (exist !== null) {
                 console.log("El codigo ya existe, ingresar uno diferente")
-                // return
+                return
             }
 
             const newProduct = new ProductModel({
@@ -33,7 +30,6 @@ class ProductRepository {
                 owner: owner
             })
 
-            // console.log(newProduct)
 
             await newProduct.save()
 
