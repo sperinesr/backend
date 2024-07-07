@@ -1,0 +1,39 @@
+<h1>User List</h1>
+
+<button><a href="/api/users/profile">Profile</a></button>
+
+<div class="container">
+    {{#each users}}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Name: {{this.first_name}} {{this.last_name}}</h5>
+            <p class="card-text">Email: {{this.email}}</p>
+            <p class="card-text">Role: {{this.role}}</p>
+            <p class="card-text">Last Connection: {{this.last_connection}}</p>
+
+            <button><a href="/api/users/delete/{{this.id}}">Eliminar</a></button>
+
+            {{#if this.isAdmin}}
+            <button><a href="/api/users/{{this.id}}/premium">Change To premium Role</a></button>
+            <button><a href="/api/users/{{this.id}}/user">Change To user Role</a></button>
+            {{/if}}
+
+            {{#if this.isPremium}}
+            <button><a href="/api/users/{{this.id}}/admin">Change To admin Role</a></button>
+            <button><a href="/api/users/{{this.id}}/user">Change To user Role</a></button>
+            {{/if}}
+
+            {{#if this.isUser}}
+            <button><a href="/api/users/{{this.id}}/admin">Change To admin Role</a></button>
+            <button><a href="/api/users/{{this.id}}/premium">Change To premium Role</a></button>
+            {{/if}}
+
+        </div>
+    </div>
+    {{/each}}
+
+    <form action="/api/users/delete" method="get" style="border: 0px;">
+        <button type="submit">Delete OLD Users</button>
+    </form>
+
+</div>

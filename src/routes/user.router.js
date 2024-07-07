@@ -4,6 +4,8 @@ const passport = require("passport");
 const UserController = require("../controllers/user.controller.js");
 const userController = new UserController();
 
+const checkUserRole = require("../middleware/checkrole.js");
+
 router.post("/register", userController.register);
 router.post("/login", userController.login);
 router.get("/profile", passport.authenticate("jwt", { session: false }), userController.profile);
@@ -69,6 +71,13 @@ router.post("/:uid/documents", upload.fields([{ name: "documents" }, { name: "pr
         res.status(500).send("Error en router al subir documentos")
     }
 })
+
+router.get("/", checkUserRole(['admin']), userController.getUsers);
+router.get("/delete", checkUserRole(['admin']), userController.deleteUsers);
+router.get("/delete/:uid", checkUserRole(['admin']), userController.deleteUser);
+router.get("/:uid/premium", checkUserRole(['admin']), userController.cambiarRolP);
+router.get("/:uid/user", checkUserRole(['admin']), userController.cambiarRolU);
+router.get("/:uid/admin", checkUserRole(['admin']), userController.cambiarRolA);
 
 module.exports = router;
 

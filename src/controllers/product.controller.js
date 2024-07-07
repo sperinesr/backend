@@ -2,6 +2,12 @@ const { trusted } = require("mongoose");
 const ProductRepository = require("../repositories/products.repository.js");
 const productRepository = new ProductRepository();
 
+const UserRepository = require("../repositories/user.repository.js")
+const userRepository = new UserRepository()
+
+const EmailManager = require("../services/email.js")
+const emailManager = new EmailManager()
+
 class ProductController {
 
     async createProduct(req, res) {
@@ -70,6 +76,12 @@ class ProductController {
 
         try {
             const product = await productRepository.deleteProduct(id);
+
+            const user = await userRepository.findById(product._id)
+
+            if (user) {
+                emailManager.enviarCorreoProducto(user.email, user.first_name, product.title)
+            }
 
             res.status(200).send(product);
 

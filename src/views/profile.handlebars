@@ -1,10 +1,11 @@
 <div class="head">
     <h1>My Profile</h1>
-    <p>Wellcome!, {{user.nombre}} {{user.apellido}}!</p>
+    <p>Wellcome!, {{user.first_name}} {{user.last_name}}!</p>
     <p>Role: {{user.role}}</p>
 
     {{#if this.isAdmin}}
-    <button><a href="/realtimeproducts"> Modificar Productos </a></button>
+    <button><a href="/realtimeproducts"> Modify Products </a></button>
+    <button><a href="/api/users"> Users </a></button>
     {{/if}}
 
     {{#if this.isUser}}
@@ -14,7 +15,8 @@
     {{/if}}
 
     {{#if this.isPremium}}
-    <button><a href="/realtimeproducts"> Modificar Productos </a></button>
+    <button><a href="/products"> Store </a></button>
+    <button><a href="/realtimeproducts"> Modify Products </a></button>
     <button><a href="/chat"> Live Chat</a></button>
     <button><a href="/api/users/premium/{{user.id}}">Change Role</a></button>
     {{/if}}

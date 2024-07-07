@@ -6,6 +6,10 @@ const ProductRepository = require("../repositories/products.repository.js");
 const productRepository = new ProductRepository();
 const { generateUniqueCode, calcularTotal } = require("../utils/cartutils.js");
 
+const EmailManager = require("../services/email.js")
+const emailManager = new EmailManager()
+
+
 class CartController {
     async newCart(req, res) {
         try {
@@ -141,6 +145,8 @@ class CartController {
                 purchaser: userWithCart._id
             });
             await ticket.save();
+
+            emailManager.enviarCorreoCompra(userWithCart.email, userWithCart.first_name, ticket.code)
 
             // Eliminar del carrito los productos que sí se compraron
             cart.products = cart.products.filter(item => productosNoDisponibles.some(productId => productId.equals(item.product)));

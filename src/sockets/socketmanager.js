@@ -3,6 +3,12 @@ const ProductRepository = require("../repositories/products.repository.js");
 const productRepository = new ProductRepository();
 const MessageModel = require("../models/message.model.js");
 
+const UserRepository = require("../repositories/user.repository.js")
+const userRepository = new UserRepository()
+
+const EmailManager = require("../services/email.js")
+const emailManager = new EmailManager()
+
 class SocketManager {
     constructor(httpServer) {
         this.io = socket(httpServer);
@@ -16,7 +22,15 @@ class SocketManager {
             socket.emit("productos", await productRepository.getProducts());
 
             socket.on("eliminarProducto", async (id) => {
-                await productRepository.deleteProduct(id);
+
+                const product = await productRepository.deleteProduct(id);
+
+                const user = await userRepository.findById(product.owner)
+
+                if (user.role === "premium") {
+                    emailManager.enviarCorreoProducto(user.email, user.first_name, product.title)
+                }
+
                 this.emitUpdatedProducts(socket);
             });
 

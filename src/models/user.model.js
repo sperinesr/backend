@@ -49,8 +49,9 @@ const userSchema = mongoose.Schema({
         reference: String
     }],
     last_connection: {
-        type: Date,
-        default: Date.now
+        type: Date
+        // le saque el default para que no se ponga la fecha cada vez que busco a los demas usuarios que no tienen
+        // default: Date.now
     }
 });
 

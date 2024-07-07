@@ -32,7 +32,7 @@ class EmailManager {
         }
     }
 
-    async enviarCorreoRestablecimiento(email, first_name, token) {
+    async enviarCorreoRestablecimiento(email, first_name) {
         try {
             const mailOptions = {
                 from: "Coder Test <coderhouse50015@gmail.com>",
@@ -49,7 +49,45 @@ class EmailManager {
             };
 
             await this.transporter.sendMail(mailOptions);
-            
+
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+        }
+    }
+
+    async enviarCorreoDadoDeBaja(email, first_name, token) {
+        try {
+            const mailOptions = {
+                from: "Coder Test <coderhouse50015@gmail.com>",
+                to: email,
+                subject: 'Usuario eliminado',
+                html: `
+                    <h1>Eliminacion de usuario</h1>
+                    <p>Hola ${first_name}!</p>
+                    <p>Se detecto que no has usado tu cuenta por mas de 2 dias, asi que se ha eliminado de nueestros registros</p>
+                `
+            };
+
+            await this.transporter.sendMail(mailOptions);
+
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+        }
+    }
+
+    async enviarCorreoProducto(email, first_name, title) {
+        try {
+            const mailOptions = {
+                from: "Coder Test <codertest@gmail.com>",
+                to: email,
+                subject: 'Producto eliminado',
+                html: `
+                    <h1>${first_name}</h1>
+                    <p>Su producto ${title} ha sido eliminado del sistema!</p>
+                `
+            };
+
+            await this.transporter.sendMail(mailOptions);
         } catch (error) {
             console.error('Error al enviar el correo electrónico:', error);
         }

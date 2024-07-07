@@ -15,8 +15,11 @@ class UserController {
     async register(req, res) {
 
         const { first_name, last_name, email, password, age } = req.body;
+
         try {
-            const existeUsuario = await userRepository.findByEmail({ email });
+
+            const existeUsuario = await userRepository.findByEmail(email);
+
             if (existeUsuario) {
                 return res.status(400).send("El usuario ya existe");
             }
@@ -25,7 +28,7 @@ class UserController {
             const nuevoCarrito = new CartModel();
             await nuevoCarrito.save();
 
-            const nuevoUsuario = new UserModel({
+            const nuevoUsuario = await userRepository.addUser({
                 first_name,
                 last_name,
                 email,
@@ -45,8 +48,8 @@ class UserController {
                 httpOnly: true
             });
 
-            // res.status(200).redirect("/api/users/profile")
-            res.send({ user: nuevoUsuario });
+            res.status(200).redirect("/")
+            // res.send({ user: nuevoUsuario });
 
         } catch (error) {
             console.error(error);
@@ -90,7 +93,7 @@ class UserController {
 
     async profile(req, res) {
         //Con DTO: 
-        const userDto = new UserDTO(req.user.first_name, req.user.last_name, req.user.role, req.user.id);
+        const userDto = new UserDTO(req.user.first_name, req.user.last_name, req.user.email, req.user.role, req.user.id, req.user.last_connection);
         const isAdmin = req.user.role === 'admin';
         const isUser = req.user.role === 'user';
         const isPremium = req.user.role === 'premium';
@@ -238,5 +241,128 @@ class UserController {
         }
     }
 
+    async cambiarRolP(req, res) {
+        const { uid } = req.params;
+
+        try {
+            //Busco el usuario: 
+            const user = await userRepository.setPremium(uid);
+
+            res.redirect("/api/users")
+
+        } catch (error) {
+            res.status(500).send("Error del servidor vamos a re morir");
+        }
+    }
+
+    async cambiarRolU(req, res) {
+        const { uid } = req.params;
+
+        try {
+            //Busco el usuario: 
+            const user = await userRepository.setUser(uid);
+
+            res.redirect("/api/users")
+
+        } catch (error) {
+            res.status(500).send("Error del servidor vamos a re morir");
+        }
+    }
+
+    async cambiarRolA(req, res) {
+        const { uid } = req.params;
+
+        try {
+            //Busco el usuario: 
+            const user = await userRepository.setAdmin(uid);
+
+            res.redirect("/api/users")
+
+        } catch (error) {
+            res.status(500).send("Error del servidor vamos a re morir");
+        }
+    }
+
+    async getUsers(req, res) {
+        try {
+
+            //Busco los usuarios: 
+            const users = await userRepository.find();
+
+            const usersDTO = users.map(user => {
+
+                return new UserDTO(user.first_name, user.last_name, user.email, user.role, user.id, user.last_connection);
+            })
+
+
+            if (!usersDTO) {
+                return res.status(404).send("Usuarios no encontrados");
+            }
+
+            console.log(usersDTO)
+
+            res.render("users", { users: usersDTO })
+
+        } catch (error) {
+            res.status(500).send("Error del servidor vamos a re morir");
+        }
+
+    }
+
+    async deleteUsers(req, res) {
+        try {
+
+            // Buscar los usuarios que no tienen last_connection o que la tienen pero es mayor a hace 2 días
+            const usersToDelete = await userRepository.findOld();
+
+            // Eliminar los usuarios encontrados
+            for (const user of usersToDelete) {
+                await userRepository.delete(user._id);
+
+                //Enviar un correo electrónico de aviso
+                await emailManager.enviarCorreoDadoDeBaja(user.email, user.first_name);
+            }
+
+            // Obtener la lista actualizada de usuarios
+            const users = await userRepository.find();
+
+            // Mapear los usuarios a través del DTO
+            const usersDTO = users.map(user => {
+                return new UserDTO(user.first_name, user.last_name, user.email, user.role, user._id, user.last_connection);
+            });
+
+            // Comprobar si no hay usuarios
+            if (!usersDTO.length) {
+                return res.status(404).redirect("/api/users");
+            }
+
+            // Renderizar o devolver los usuarios
+            res.render("users", { users: usersDTO });
+
+        } catch (error) {
+            res.status(500).send("Error del servidor vamos a re morir");
+        }
+
+    }
+
+    async deleteUser(req, res) {
+
+        const { uid } = req.params;
+
+        try {
+
+            // Eliminar usuarios
+            await userRepository.delete(uid);
+
+            // Volver a la vista anterior
+            return res.status(404).redirect("/api/users");
+
+        } catch (error) {
+            res.status(500).send("Error del servidor vamos a re morir");
+        }
+
+    }
+
 }
+
 module.exports = UserController;

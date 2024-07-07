@@ -88,26 +88,6 @@ class ProductRepository {
         }
     }
 
-    async getProducts2() {
-
-        try {
-
-            const products = await ProductModel.find()
-
-            if (!products) {
-                console.log("Productos no encontrados")
-                return null
-            }
-
-            console.log("Productos encontrados")
-            return products
-
-        } catch (error) {
-            console.log("Error al obtener productos")
-            throw error
-        }
-    }
-
     async getProductById(id) {
 
         try {
