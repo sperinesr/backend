@@ -88,13 +88,21 @@ class UserRepository {
         }
     }
 
-    async setAdmin(uid) {
+    async setRole(uid) {
         try {
 
-            const user = await UserModel.findByIdAndUpdate(uid, { role: 'admin' })
+            const user = await UserModel.findById(uid)
 
-            console.log("Usuario modificado para rol admin")
-            return user
+            if (user.role === "user") {
+                const userUpdated = await UserModel.findByIdAndUpdate(uid, { role: 'premium' })
+                return userUpdated
+            } else if (user.role === "premium") {
+                const userUpdated = await UserModel.findByIdAndUpdate(uid, { role: 'admin' })
+                return userUpdated
+            } else {
+                const userUpdated = await UserModel.findByIdAndUpdate(uid, { role: 'user' })
+                return userUpdated
+            }
 
         } catch (error) {
             console.log("Error al modificar usuario")
@@ -102,33 +110,6 @@ class UserRepository {
         }
     }
 
-    async setPremium(uid) {
-        try {
-
-            const user = await UserModel.findByIdAndUpdate(uid, { role: 'premium' })
-
-            console.log("Usuario modificado para rol premium")
-            return user
-
-        } catch (error) {
-            console.log("Error al modificar usuario")
-            throw error
-        }
-    }
-
-    async setUser(uid) {
-        try {
-
-            const user = await UserModel.findByIdAndUpdate(uid, { role: 'user' })
-
-            console.log("Usuario modificado para rol user")
-            return user
-
-        } catch (error) {
-            console.log("Error al modificar usuario")
-            throw error
-        }
-    }
 }
 
 

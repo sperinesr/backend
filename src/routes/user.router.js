@@ -75,9 +75,7 @@ router.post("/:uid/documents", upload.fields([{ name: "documents" }, { name: "pr
 router.get("/", checkUserRole(['admin']), userController.getUsers);
 router.get("/delete", checkUserRole(['admin']), userController.deleteUsers);
 router.get("/delete/:uid", checkUserRole(['admin']), userController.deleteUser);
-router.get("/:uid/premium", checkUserRole(['admin']), userController.cambiarRolP);
-router.get("/:uid/user", checkUserRole(['admin']), userController.cambiarRolU);
-router.get("/:uid/admin", checkUserRole(['admin']), userController.cambiarRolA);
+router.get("/:uid/role", checkUserRole(['admin']), userController.cambiarRol);
 
 module.exports = router;
 

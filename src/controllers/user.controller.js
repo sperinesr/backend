@@ -216,11 +216,11 @@ class UserController {
 
             const userDocuments = user.documents.map(doc => doc.name)
 
-            // const tieneDocumentacion = documentacionRequerida.every(doc => userDocuments.includes(doc))
+            const tieneDocumentacion = documentacionRequerida.every(doc => userDocuments.includes(doc))
 
-            // if (!tieneDocumentacion) {
-            //     return res.status(400).send("Usuario debe completar toda la documentacion requerida")
-            // }
+            if (!tieneDocumentacion) {
+                return res.status(400).send("Usuario debe completar toda la documentacion requerida")
+            }
 
             if (!userDocuments.lenght == 3) {
                 return res.status(400).send("Usuario debe completar toda la documentacion requerida")
@@ -241,40 +241,12 @@ class UserController {
         }
     }
 
-    async cambiarRolP(req, res) {
+    async cambiarRol(req, res) {
         const { uid } = req.params;
 
         try {
-            //Busco el usuario: 
-            const user = await userRepository.setPremium(uid);
-
-            res.redirect("/api/users")
-
-        } catch (error) {
-            res.status(500).send("Error del servidor vamos a re morir");
-        }
-    }
-
-    async cambiarRolU(req, res) {
-        const { uid } = req.params;
-
-        try {
-            //Busco el usuario: 
-            const user = await userRepository.setUser(uid);
-
-            res.redirect("/api/users")
-
-        } catch (error) {
-            res.status(500).send("Error del servidor vamos a re morir");
-        }
-    }
-
-    async cambiarRolA(req, res) {
-        const { uid } = req.params;
-
-        try {
-            //Busco el usuario: 
-            const user = await userRepository.setAdmin(uid);
+            //seteo el rol 
+            await userRepository.setRole(uid);
 
             res.redirect("/api/users")
 
@@ -298,8 +270,6 @@ class UserController {
             if (!usersDTO) {
                 return res.status(404).send("Usuarios no encontrados");
             }
-
-            console.log(usersDTO)
 
             res.render("users", { users: usersDTO })
 
